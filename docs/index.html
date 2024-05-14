@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.js"></script>
+    <script src="SpinePlugin-4.1.js"></script>
+    <!-- <script src="https://unpkg.com/@esotericsoftware/spine-phaser@4.1.*/dist/iife/spine-phaser.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="../../index.css" /> -->
+    <title>Spine Phaser Example</title>
+  </head>
+
+  <body class="p-4 flex flex-col items-center">
+    <h1>Basic example with Spine assets</h1>
+  </body>
+  <script>
+    class BasicExample extends Phaser.Scene {
+      preload() {
+        this.load.setPath('./assets/pica_test');
+        this.load.spine('pica', 'pica.json', 'pica.atlas');
+      }
+
+      create() {
+        const spinePica = this.add.spine(0, 700, 'pica', 'animation', true);
+        spinePica.scale = 0.5;
+        // spinePica.setPosition(50, 50);
+      }
+    }
+
+    const config = {
+      type: Phaser.AUTO,
+      width: 1200,
+      height: 900,
+      type: Phaser.WEBGL,
+      scene: [BasicExample],
+        plugins: {
+            scene: [
+                { key: 'SpinePlugin', plugin: window.SpinePlugin, mapping: 'spine' }
+            ]
+        }
+    };
+
+    const game = new Phaser.Game(config);
+  </script>
+</html>
