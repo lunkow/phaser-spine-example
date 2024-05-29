@@ -13,18 +13,192 @@
 
   <body class="p-4 flex flex-col items-center">
     <h1>Basic example with Spine assets</h1>
+
+    <div class="controls">
+      <button id="btnIdle">idle</button>
+      <button id="btnIdleLoop">idle loop</button>
+      <button id="btnWave">waving_hand</button>
+      <button id="btnPointButon">point_to_a_button</button>
+      <button id="btnThumbsUp">thumbs_up</button>
+      <button id="btnThumbsUpChained">chained thumbs_up</button>
+      <button id="btnStop">stop</button>
+      
+    </div>
   </body>
   <script>
     class BasicExample extends Phaser.Scene {
       preload() {
-        this.load.setPath('./assets/pica_test');
-        this.load.spine('pica', 'pica.json', 'pica.atlas');
+        // this.load.setPath('./assets/pica_test');
+        // this.load.spine('pica', 'pica.json', 'pica.atlas');
+
+        // this.load.setPath('./assets/cap_test');
+        // this.load.setPath('./assets/cap_test_2');
+        this.load.setPath('./assets/cap_test_3');
+        this.load.spine('cap', 'cap.json', 'cap.atlas');
       }
 
       create() {
-        const spinePica = this.add.spine(0, 700, 'pica', 'animation', true);
-        spinePica.scale = 0.5;
+        // this.spine.setDebugBones.bind(this.spine)
+
+        // const spinePica = this.add.spine(0, 700, 'pica', 'animation', true);
+        // const spinePica = this.add.spine(0, 700, 'cap', 'waving_hand', true);
+        // const spinePica = this.add.spine(0, 700, 'cap', 'point_to_a_button', true);
+        // const spinePica = this.add.spine(0, 700, 'cap', 'thumbs up', true);
+        // const spinePica = this.add.spine(0, 700, 'cap', 'thumbs up', true);
+
+        const spinePica = this.add.spine(0, 700, 'cap');
+        spinePica.setEmptyAnimation(0, 0.3);
+
+        // spinePica.drawDebug = true;
+        // spinePica.setDebugRegionAttachments = false;
+        // spinePica.setDebugBoundingBoxes = false;
+        // spinePica.setDebugMeshHull = false;
+        // spinePica.setDebugMeshTriangles = false;
+        // spinePica.setDebugPaths = false;
+        // spinePica.setDebugSkeletonXY = false;
+        // spinePica.setDebugClipping = false;
+        
+        
+        
+        
+        
+
+        // const spinePica = this.add.spine(0, 700, 'cap', 'thumbs_up', true);
+
+        console.warn('capSprite:');
+        spinePica.stateData.defaultMix = 0.5;
+        console.log(spinePica);
+        console.log(spinePica.state);
+        console.log('spinePica.getAnimationList():');
+        console.log(spinePica.getAnimationList());
+        console.log('spinePica findAnimation idle:');
+        console.log(spinePica.findAnimation('idle'));
+        console.log('spinePica findAnimation point_to_a_button:');
+        console.log(spinePica.findAnimation('point_to_a_button'));
+        console.log(spinePica.stateData.skeletonData);
+        console.log(spinePica.stateData.skeletonData.animations);
+        
+        let scene = this; // check
+        let sceneAnimations = this.anims;
+        console.log(sceneAnimations);
+        // const spinePica = this.add.spine(0, 800, 'cap', 'idle', true);
+        
+        // spinePica.scale = 0.25;
+        spinePica.setScale(0.25);
+        // spinePica.play('idle')
         // spinePica.setPosition(50, 50);
+
+
+
+
+
+
+
+        let btnIdle = document.querySelector('#btnIdle');
+        btnIdle.addEventListener('click', () => {
+          // spinePica.play({key: 'idle', repeat: 3});
+          console.log(spinePica.state);
+
+          // spinePica.play('idle', -1);
+          // spinePica.play('idle', 2);
+          console.log();
+          // spinePica.play('idle');
+          // spinePica.play('idle', false, true); // animationName, loop, ignoreIfPlaying
+          // spinePica.next = 'idle';
+          spinePica.setAnimation(0, "idle", false, true);
+          // spinePica.addAnimation(0, "point_to_a_button", 2, false);
+          // spinePica.addAnimation(0, "idle", 0, false);
+
+          // spinePica.setAnimation(0, 'idle', false, true); // animationName, loop, ignoreIfPlaying
+          // spinePica.setAnimation(1, 'point_to_a_button', false, true); // animationName, loop, ignoreIfPlaying
+          // spinePica.setAnimation(2, 'idle', false, true); // animationName, loop, ignoreIfPlaying
+          
+          // spinePica.next = 'idle';
+          console.log(spinePica.state);
+
+        });
+
+
+
+
+        let btnIdleLoop = document.querySelector('#btnIdleLoop');
+        btnIdleLoop.addEventListener('click', () => {
+          spinePica.setAnimation(0, "idle", true, true);
+          console.log(spinePica.state);
+        });
+
+        let btnWave = document.querySelector('#btnWave');
+        btnWave.addEventListener('click', () => {
+          // spinePica.play('waving_hand')
+          spinePica.setAnimation(0, "waving_hand", false, true);
+          spinePica.addAnimation(0, "idle", true, 0);
+          // let trackEntryPoint = spinePica.state.addAnimation(0, "point_to_a_button", false, 0); // trackIndex, animationName, loop, delay
+        });
+
+
+        let btnPointButon = document.querySelector('#btnPointButon');
+        btnPointButon.addEventListener('click', () => {
+          // spinePica.play({key: 'idle', repeat: 3});
+          spinePica.play('point_to_a_button', -1);
+        });
+
+        let btnThumbsUp = document.querySelector('#btnThumbsUp');
+        btnThumbsUp.addEventListener('click', () => {
+          // spinePica.play({key: 'idle', repeat: 3});
+          spinePica.play('thumbs_up', 0);
+        });
+
+        let btnThumbsUpChained = document.querySelector('#btnThumbsUpChained');
+        btnThumbsUpChained.addEventListener('click', () => {
+          // spinePica.play({key: 'idle', repeat: 3});
+          spinePica.state.setAnimation(0, "idle", true); // trackIndex, animationName, loop, ignoreIfPlaying
+          let trackEntryPoint = spinePica.state.addAnimation(0, "point_to_a_button", false, 0); // trackIndex, animationName, loop, delay
+          console.log('trackEntryPoint:');
+          console.log(trackEntryPoint);
+
+          // trackEntryPoint.mixDura
+          // spinePica.state.addAnimation(0, "idle", true, 0);
+          // spinePica.state.mixDuration = 0.6;
+        });
+
+        let btnStop = document.querySelector('#btnStop');
+        btnStop.addEventListener('click', () => {
+          // spinePica.play({key: 'idle', repeat: 3});
+          // console.log(spinePica.state)
+          // spinePica.pauseAnimation();
+
+          // spinePica.addEmptyAnimation(0, 0.3, 0); // trackIndex, mixDuration, delay
+          // spinePica.clearTracks();
+          spinePica.setEmptyAnimation(0, 0.3); // trackIndex, mixDuration
+        });
+
+
+        // .addListener
+        function startHandler(entry) {
+          console.log(`Started animation ${entry.animation.name}`);
+          console.log(entry.animation);
+        }
+
+        const testListener = spinePica.state.addListener({
+          start: startHandler,
+          interrupt: (entry) =>
+            console.log(`Interrupted animation ${entry.animation.name}`),
+          end: (entry) => console.log(`Ended animation ${entry.animation.name}`),
+          dispose: (entry) => console.log(`Disposed animation ${entry.animation.name}`),
+          complete: (entry) =>
+            console.log(`Completed animation ${entry.animation.name}`),
+        });
+
+        // const trackEntry = spinePica.state.addAnimation(
+        //   0,
+        //   "idle",
+        //   false,
+        //   true
+        // );
+        // trackEntry.listener = {
+        //   event: (entry, event) =>
+        //     log(`Custom event for ${entry.animation.name}: ${event.data.name}`),
+        // };
       }
     }
 
@@ -42,5 +216,20 @@
     };
 
     const game = new Phaser.Game(config);
+    console.log(game['scene']['scenes'])
+
+    function startIdle() {
+      
+    }
   </script>
+
+  <style>
+    .controls {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+  </style>
 </html>

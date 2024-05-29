@@ -10,5 +10,6 @@ https://esotericsoftware.com/forum/d/16273-error-unknown-texture-filter-true/11 
 https://github.com/phaserjs/phaser/blob/master/plugins/spine4.1/dist/SpinePlugin.js  
 ERROR: Unknown texture filter true - Spine Forum  
 Discuss animating with Spine and using the Spine Runtimes in your apps and video games.  
+https://esotericsoftware.com/spine-phaser  - documentation
 
 https://stackblitz.com/edit/stackblitz-starters-qe1vzt?file=index.html  
