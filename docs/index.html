@@ -5,7 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="//cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.js"></script>
-    <script src="SpinePlugin-4.1.js"></script>
+    <!-- <script src="SpinePlugin-4.1.js"></script> -->
+    <script src="spine-phaser-4.2-runtime.js"></script>
+
+
     <!-- <script src="https://unpkg.com/@esotericsoftware/spine-phaser@4.1.*/dist/iife/spine-phaser.min.js"></script> -->
     <!-- <link rel="stylesheet" href="../../index.css" /> -->
     <title>Spine Phaser Example</title>
@@ -28,14 +31,22 @@
   <script>
     class BasicExample extends Phaser.Scene {
       preload() {
+        console.log(this.load)
         // this.load.setPath('./assets/pica_test');
         // this.load.spine('pica', 'pica.json', 'pica.atlas');
 
         // this.load.setPath('./assets/cap_test');
         // this.load.setPath('./assets/cap_test_2');
         // this.load.setPath('./assets/cap_test_3');
-        this.load.setPath('./assets/WB_LP_Cap_animation');
-        this.load.spine('cap', 'cap.json', 'cap.atlas');
+
+
+        // this.load.setPath('./assets/WB_LP_Cap_animation');
+        // this.load.spine('cap', 'cap.json', 'cap.atlas'); // works with SpinePlugin-4.1
+
+        // for spine-phaser-4.2-runtime
+        this.load.spineJson("cap-json", "./assets/WB_LP_Cap_animation/cap.json");
+        this.load.spineAtlas("cap-atlas", "./assets/WB_LP_Cap_animation/cap.atlas");
+
       }
 
       create() {
@@ -47,8 +58,9 @@
         // const spinePica = this.add.spine(0, 700, 'cap', 'thumbs up', true);
         // const spinePica = this.add.spine(0, 700, 'cap', 'thumbs up', true);
 
-        const spinePica = this.add.spine(0, 700, 'cap');
-        spinePica.setEmptyAnimation(0, 0.3);
+        // const spinePica = this.add.spine(0, 700, 'cap');
+        const spinePica = this.add.spine(0, 700, 'cap-json', 'cap-atlas');
+        // spinePica.setEmptyAnimation(0, 0.3);
 
         // spinePica.drawDebug = true;
         // spinePica.setDebugRegionAttachments = false;
@@ -67,17 +79,17 @@
         // const spinePica = this.add.spine(0, 700, 'cap', 'thumbs_up', true);
 
         console.warn('capSprite:');
-        spinePica.stateData.defaultMix = 0.5;
+        // spinePica.stateData.defaultMix = 0.5;
         console.log(spinePica);
-        console.log(spinePica.state);
-        console.log('spinePica.getAnimationList():');
-        console.log(spinePica.getAnimationList());
-        console.log('spinePica findAnimation idle:');
-        console.log(spinePica.findAnimation('idle'));
-        console.log('spinePica findAnimation point_to_a_button:');
-        console.log(spinePica.findAnimation('point_to_a_button'));
-        console.log(spinePica.stateData.skeletonData);
-        console.log(spinePica.stateData.skeletonData.animations);
+        // console.log(spinePica.state);
+        // console.log('spinePica.getAnimationList():');
+        // console.log(spinePica.getAnimationList());
+        // console.log('spinePica findAnimation idle:');
+        // console.log(spinePica.findAnimation('idle'));
+        // console.log('spinePica findAnimation point_to_a_button:');
+        // console.log(spinePica.findAnimation('point_to_a_button'));
+        // console.log(spinePica.stateData.skeletonData);
+        // console.log(spinePica.stateData.skeletonData.animations);
         
         let scene = this; // check
         let sceneAnimations = this.anims;
@@ -98,7 +110,7 @@
         let btnIdle = document.querySelector('#btnIdle');
         btnIdle.addEventListener('click', () => {
           // spinePica.play({key: 'idle', repeat: 3});
-          console.log(spinePica.state);
+          console.log(spinePica.animationState);
 
           // spinePica.play('idle', -1);
           // spinePica.play('idle', 2);
@@ -106,7 +118,7 @@
           // spinePica.play('idle');
           // spinePica.play('idle', false, true); // animationName, loop, ignoreIfPlaying
           // spinePica.next = 'idle';
-          spinePica.setAnimation(0, "idle", false, true);
+          spinePica.animationState.setAnimation(0, "idle", false, true);
           // spinePica.addAnimation(0, "point_to_a_button", 2, false);
           // spinePica.addAnimation(0, "idle", 0, false);
 
@@ -124,15 +136,15 @@
 
         let btnIdleLoop = document.querySelector('#btnIdleLoop');
         btnIdleLoop.addEventListener('click', () => {
-          spinePica.setAnimation(0, "idle", true, true);
+          spinePica.animationState.setAnimation(0, "idle", true, true);
           console.log(spinePica.state);
         });
 
         let btnWave = document.querySelector('#btnWave');
         btnWave.addEventListener('click', () => {
           // spinePica.play('waving_hand')
-          spinePica.setAnimation(0, "waving_hand", false, true);
-          spinePica.addAnimation(0, "idle", true, 0);
+          spinePica.animationState.setAnimation(0, "waving_hand", false, true);
+          // spinePica.animationState.addAnimation(0, "idle", true, 0);
           // let trackEntryPoint = spinePica.state.addAnimation(0, "point_to_a_button", false, 0); // trackIndex, animationName, loop, delay
         });
 
@@ -140,20 +152,24 @@
         let btnPointButon = document.querySelector('#btnPointButon');
         btnPointButon.addEventListener('click', () => {
           // spinePica.play({key: 'idle', repeat: 3});
-          spinePica.play('point_to_a_button', -1);
+          // spinePica.animationState.play('point_to_a_button', -1);
+          spinePica.animationState.setAnimation(0, "point_to_a_button", false, true);
+
         });
 
         let btnThumbsUp = document.querySelector('#btnThumbsUp');
         btnThumbsUp.addEventListener('click', () => {
           // spinePica.play({key: 'idle', repeat: 3});
-          spinePica.play('thumbs_up', 0);
+          // spinePica.play('thumbs_up', 0);
+          spinePica.animationState.setAnimation(0, "thumbs_up", false, true);
+
         });
 
         let btnThumbsUpChained = document.querySelector('#btnThumbsUpChained');
         btnThumbsUpChained.addEventListener('click', () => {
           // spinePica.play({key: 'idle', repeat: 3});
-          spinePica.state.setAnimation(0, "idle", true); // trackIndex, animationName, loop, ignoreIfPlaying
-          let trackEntryPoint = spinePica.state.addAnimation(0, "point_to_a_button", false, 0); // trackIndex, animationName, loop, delay
+          spinePica.animationState.setAnimation(0, "idle", true); // trackIndex, animationName, loop, ignoreIfPlaying
+          let trackEntryPoint = spinePica.animationState.addAnimation(0, "point_to_a_button", false, 0); // trackIndex, animationName, loop, delay
           console.log('trackEntryPoint:');
           console.log(trackEntryPoint);
 
@@ -170,7 +186,7 @@
 
           // spinePica.addEmptyAnimation(0, 0.3, 0); // trackIndex, mixDuration, delay
           // spinePica.clearTracks();
-          spinePica.setEmptyAnimation(0, 0.3); // trackIndex, mixDuration
+          spinePica.animationState.setEmptyAnimation(0, 0.3); // trackIndex, mixDuration
         });
 
 
@@ -180,7 +196,7 @@
           console.log(entry.animation);
         }
 
-        const testListener = spinePica.state.addListener({
+        const testListener = spinePica.animationState.addListener({
           start: startHandler,
           interrupt: (entry) =>
             console.log(`Interrupted animation ${entry.animation.name}`),
@@ -209,11 +225,22 @@
       height: 900,
       type: Phaser.WEBGL,
       scene: [BasicExample],
-        plugins: {
-            scene: [
-                { key: 'SpinePlugin', plugin: window.SpinePlugin, mapping: 'spine' }
-            ]
-        }
+        // plugins: {
+        //     scene: [
+        //         { key: 'SpinePlugin', plugin: window.SpinePlugin, mapping: 'spine' }
+        //     ]
+        // },
+
+        // for 
+      plugins: {
+        scene: [
+          {
+            key: "spine.SpinePlugin",
+            plugin: window.spine.SpinePlugin,
+            mapping: "spine",
+          },
+        ],
+      },
     };
 
     const game = new Phaser.Game(config);
