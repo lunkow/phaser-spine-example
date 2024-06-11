@@ -170,6 +170,8 @@
           // spinePica.play({key: 'idle', repeat: 3});
           spinePica.animationState.setAnimation(0, "idle", true); // trackIndex, animationName, loop, ignoreIfPlaying
           let trackEntryPoint = spinePica.animationState.addAnimation(0, "point_to_a_button", false, 0); // trackIndex, animationName, loop, delay
+          trackEntryPoint.mixDuration = 0.6;
+
           console.log('trackEntryPoint:');
           console.log(trackEntryPoint);
 
